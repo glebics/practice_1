@@ -1,22 +1,38 @@
 import random
+from typing import List
 
 
 class Cell():
 
-    def __init__(self, around_mines=0, mine=False):
+    def __init__(self, around_mines=0, mine=False) -> None:
         self.around_mines = around_mines
         self.mine = mine
         self.fl_open = False
 
+    def draw(self) -> None:
+        if not self.fl_open:
+            if self.mine:
+                print("*", end=" ")
+            else:
+                if self.around_mines > 0:
+                    print(self.around_mines, end=" ")
+                else:
+                    print(" ", end=" ")
+        else:
+            print("#", end=" ")
+
 
 class GamePole():
 
-    def __init__(self, N, M):
+    def __init__(self, N, M) -> None:
         self.N = N
         self.M = M
-        self.pole = [[Cell() for _ in range(N)] for _ in range(N)]
+        self.pole: List[List[Cell]]
+        self._build_field()
 
+    def _build_field(self) -> None:
         #   shuffle mines
+        self.pole = [[Cell() for _ in range(self.N)] for _ in range(self.N)]
         all_pairs = [(i, j) for i in range(self.N) for j in range(self.N)]
         all_mines = [
             mine_pair for mine_pair in random.sample(all_pairs, self.M)]
@@ -39,19 +55,10 @@ class GamePole():
                                                            and j_around == j)):
                         self.pole[i_around][j_around].around_mines += 1
 
-    def show(self):
+    def show(self) -> None:
         for row in self.pole:
             for element in row:
-                if not element.fl_open:
-                    if element.mine:
-                        print("*", end=" ")
-                    else:
-                        if element.around_mines > 0:
-                            print(element.around_mines, end=" ")
-                        else:
-                            print(" ", end=" ")
-                else:
-                    print("#", end=" ")
+                element.draw()
             print()
 
 
