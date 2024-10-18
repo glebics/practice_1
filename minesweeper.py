@@ -5,9 +5,9 @@ from typing import List
 class Cell():
 
     def __init__(self, around_mines=0, mine=False) -> None:
-        self.around_mines = around_mines
-        self.mine = mine
-        self.fl_open = False
+        self.around_mines: int = around_mines
+        self.mine: bool = mine
+        self.fl_open: bool = False
 
     def draw(self) -> None:
         if not self.fl_open:
@@ -25,8 +25,8 @@ class Cell():
 class GamePole():
 
     def __init__(self, N, M) -> None:
-        self.N = N
-        self.M = M
+        self.N: int = N
+        self.M: int = M
         self.pole: List[List[Cell]]
         self._build_field()
 
