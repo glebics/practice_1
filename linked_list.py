@@ -1,49 +1,64 @@
-class ObjList():
-    def __init__(self, data):
-        self.__data = data
-        self.__next = None
-        self.__prev = None
+from typing import Any, Optional
 
-    def __next__(self):
+
+class ObjList:
+    def __init__(self, data: Any):
+        """Инициализирует узел ObjList с данными и без указателей на следующий или предыдущий узел."""
+        self.__data: Any = data
+        self.__next: Optional['ObjList'] = None
+        self.__prev: Optional['ObjList'] = None
+
+    def __next__(self) -> 'ObjList':
+        """Возвращает следующий узел; вызывает StopIteration, если следующего узла нет."""
         if not self.__next:
             raise StopIteration
         return self.__next
 
-    def __prev__(self):
+    def __prev__(self) -> 'ObjList':
+        """Возвращает предыдущий узел; вызывает StopIteration, если предыдущего узла нет."""
         if not self.__prev:
             raise StopIteration
         return self.__prev
 
-    def get_data(self):
+    def get_data(self) -> Any:
+        """Возвращает данные, хранящиеся в этом узле."""
         return self.__data
 
-    def get_next(self):
+    def get_next(self) -> Optional['ObjList']:
+        """Возвращает следующий узел."""
         return self.__next
 
-    def get_prev(self):
+    def get_prev(self) -> Optional['ObjList']:
+        """Возвращает предыдущий узел."""
         return self.__prev
 
-    def set_data(self, data):
+    def set_data(self, data: Any) -> None:
+        """Устанавливает данные для этого узла."""
         self.__data = data
 
-    def set_next(self, obj):
+    def set_next(self, obj: 'ObjList') -> None:
+        """Устанавливает следующий узел."""
         self.__next = obj
 
-    def set_prev(self, obj):
+    def set_prev(self, obj: 'ObjList') -> None:
+        """Устанавливает предыдущий узел."""
         self.__prev = obj
 
 
-class LinkedList():
+class LinkedList:
     def __init__(self):
-        self.__head = None
-        self.__tail = None
-        self.__current = None
+        """Инициализирует пустой связный список."""
+        self.__head: Optional[ObjList] = None
+        self.__tail: Optional[ObjList] = None
+        self.__current: Optional[ObjList] = None
 
-    def __iter__(self):
+    def __iter__(self) -> 'LinkedList':
+        """Возвращает объект итератора (self) и сбрасывает текущий узел на головной."""
         self.__current = self.__head
         return self
 
-    def __next__(self):
+    def __next__(self) -> ObjList:
+        """Возвращает следующий узел списка при итерации."""
         if self.__current is None:
             raise StopIteration
         else:
@@ -51,7 +66,8 @@ class LinkedList():
             self.__current = self.__current.get_next()
             return obj
 
-    def add_obj(self, obj):
+    def add_obj(self, obj: ObjList) -> None:
+        """Добавляет узел ObjList в конец связного списка."""
         if self.__head is None:
             self.__head = obj
             self.__tail = obj
@@ -60,7 +76,8 @@ class LinkedList():
             obj.set_prev(self.__tail)
             self.__tail = obj
 
-    def remove_obj(self):
+    def remove_obj(self) -> None:
+        """Удаляет последний объект из связного списка."""
         if self.__tail is None:
             return
         if self.__head == self.__tail:
@@ -68,9 +85,11 @@ class LinkedList():
             self.__tail = None
         else:
             self.__tail = self.__tail.get_prev()
-            self.__tail.set_next(None)
+            if self.__tail:
+                self.__tail.set_next(None)
 
-    def get_data(self):
+    def get_data(self) -> list:
+        """Возвращает список данных из всех узлов связного списка."""
         if self.__head is None:
             return []
         else:
@@ -82,7 +101,7 @@ class LinkedList():
             return data_set
 
 
-#   исполняемый код
+#   Исполняемый код
 ob = ObjList("данные 1")
 lst = LinkedList()
 lst.add_obj(ob)
